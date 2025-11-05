@@ -1,4 +1,6 @@
 // API base URL
+// In production: full backend URL with /api (e.g., https://your-backend.onrender.com/api)
+// In development: '/api' for Vite proxy to work with local backend
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Helper function to make API calls
