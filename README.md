@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Authentication App - Full Stack
 
 A complete authentication application with Node.js/Express backend and React frontend.
@@ -158,3 +159,6 @@ The client will run on `http://localhost:3000`
 - Refresh tokens
 - Role-based access control
 - Profile update functionality
+=======
+# capstone01
+>>>>>>> 660a99a (Initial commit)
