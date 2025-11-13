@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./../styles.css";
 import { register as apiRegister } from "../api";
-import image from "../../assets/image.png";
 
 export default function Register({ onSwitchToLogin }) {
   const [name, setName] = useState("");
@@ -85,14 +84,6 @@ export default function Register({ onSwitchToLogin }) {
             </a>
           </p>
         </form>
-      </div>
-
-      <div className="right-col">
-        <div className="peach-shape">
-          <div className="illustration-placeholder">
-            <img src={image} alt="Registration Illustration" />
-          </div>
-        </div>
       </div>
     </div>
   );
