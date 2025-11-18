@@ -208,13 +208,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - Render & Vercel for easy deployment
 - React & Vite communities for excellent tools
 
-## 📸 Screenshots
 
-### Login Page
-![Login Page](./screenshots/login.png)
-
-### Register Page
-![Register Page](./screenshots/register.png)
 
 ---
 
