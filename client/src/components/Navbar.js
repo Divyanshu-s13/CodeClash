@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import codeClashLogo from '../assets/codeClashLogo.png';
 import codeClashTitle from '../assets/codeClashTitle.png';
+import API_BASE_URL from '../config/api';
 import './Navbar.css';
 
 const Navbar = ({ user, onLogout }) => {
@@ -100,7 +101,7 @@ const Navbar = ({ user, onLogout }) => {
         console.log('[Search] Searching for:', query);
         console.log('[Search] Token exists:', !!token);
         
-        const response = await fetch(`http://localhost:5001/api/users/search?username=${encodeURIComponent(query)}`, {
+        const response = await fetch(`${API_BASE_URL}/api/users/search?username=${encodeURIComponent(query)}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

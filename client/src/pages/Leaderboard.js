@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import API_BASE_URL from '../config/api';
 import './Leaderboard.css';
 
 const Leaderboard = ({ user, onLogout }) => {
@@ -19,7 +20,7 @@ const Leaderboard = ({ user, onLogout }) => {
       }
 
       console.log('[Leaderboard] Fetching from API...');
-      const response = await fetch('http://localhost:5001/api/leaderboard', {
+      const response = await fetch(`${API_BASE_URL}/api/leaderboard`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

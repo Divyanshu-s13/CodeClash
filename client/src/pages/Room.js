@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import roomService from '../services/roomService';
+import API_BASE_URL from '../config/api';
 import './Room.css';
 
 const Room = ({ user, refreshUser }) => {
@@ -16,7 +17,7 @@ const Room = ({ user, refreshUser }) => {
   const fetchRoomDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/rooms/${code}`, {
+      const response = await fetch(`${API_BASE_URL}/api/rooms/${code}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -79,7 +80,7 @@ const Room = ({ user, refreshUser }) => {
     setIsStarting(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/rooms/start/${code}`, {
+      const response = await fetch(`${API_BASE_URL}/api/rooms/start/${code}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

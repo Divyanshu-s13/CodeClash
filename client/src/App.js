@@ -8,6 +8,7 @@ import Room from './pages/Room';
 import Leaderboard from './pages/Leaderboard';
 import Battle from './pages/Battle';
 import Stats from './pages/Stats';
+import API_BASE_URL from './config/api';
 import './App.css';
 
 function App() {
@@ -53,7 +54,7 @@ function App() {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch('http://localhost:5001/api/auth/me', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

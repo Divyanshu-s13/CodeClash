@@ -7,6 +7,7 @@ import SubmitModal from '../components/SubmitModal';
 import FinalScoreboard from '../components/FinalScoreboard';
 import Timer from '../components/Timer';
 import LeaveNotification from '../components/LeaveNotification';
+import API_BASE_URL from '../config/api';
 import './Battle.css';
 
 const Battle = ({ user, refreshUser }) => {
@@ -91,7 +92,7 @@ const Battle = ({ user, refreshUser }) => {
         const token = localStorage.getItem('token');
         
         // Get room details
-        const roomResponse = await fetch(`http://localhost:5001/api/rooms/${code}`, {
+        const roomResponse = await fetch(`${API_BASE_URL}/api/rooms/${code}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -452,7 +453,7 @@ const Battle = ({ user, refreshUser }) => {
       console.log('All tests passed! Notifying backend to change question...');
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5001/api/rooms/submit/${code}`, {
+        const response = await fetch(`${API_BASE_URL}/api/rooms/submit/${code}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -515,7 +516,7 @@ const Battle = ({ user, refreshUser }) => {
   const handleLeave = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/rooms/leave/${code}`, {
+      const response = await fetch(`${API_BASE_URL}/api/rooms/leave/${code}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

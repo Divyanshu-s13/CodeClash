@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { FaMapMarkerAlt, FaUniversity, FaLinkedin, FaGithub, FaInfoCircle, FaTrash, FaSave, FaLock, FaPencilAlt } from 'react-icons/fa';
+import API_BASE_URL from '../config/api';
 import './Dashboard.css';
 
 const Dashboard = ({ user, onLogout }) => {
@@ -88,7 +89,7 @@ const Dashboard = ({ user, onLogout }) => {
           formData.append('profilePhoto', file);
           
           try {
-            const response = await fetch('http://localhost:5001/api/users/upload-photo', {
+            const response = await fetch(`${API_BASE_URL}/api/users/upload-photo`, {
               method: 'POST',
               headers: {
                 'Authorization': `Bearer ${token}`
@@ -187,7 +188,7 @@ const Dashboard = ({ user, onLogout }) => {
 
       try {
         // Try to update on backend
-        const response = await fetch('http://localhost:5001/api/users/update-profile', {
+        const response = await fetch(`${API_BASE_URL}/api/users/update-profile`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -253,7 +254,7 @@ const Dashboard = ({ user, onLogout }) => {
           formData.append('profilePhoto', file);
           
           try {
-            const response = await fetch('http://localhost:5001/api/users/upload-photo', {
+            const response = await fetch(`${API_BASE_URL}/api/users/upload-photo`, {
               method: 'POST',
               headers: {
                 'Authorization': `Bearer ${token}`
@@ -680,7 +681,7 @@ const AshesModeModal = ({ user, onClose, navigate }) => {
         return;
       }
 
-      const response = await fetch('http://localhost:5001/api/matchmaking/queue/join', {
+      const response = await fetch(`${API_BASE_URL}/api/matchmaking/queue/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -718,7 +719,7 @@ const AshesModeModal = ({ user, onClose, navigate }) => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      await fetch('http://localhost:5001/api/matchmaking/queue/leave', {
+      await fetch(`${API_BASE_URL}/api/matchmaking/queue/leave`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -744,7 +745,7 @@ const AshesModeModal = ({ user, onClose, navigate }) => {
           return;
         }
 
-        const response = await fetch('http://localhost:5001/api/matchmaking/queue/status', {
+        const response = await fetch(`${API_BASE_URL}/api/matchmaking/queue/status`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -853,7 +854,7 @@ const CreateRoomModal = ({ user, onClose, navigate }) => {
         return;
       }
 
-      const response = await fetch('http://localhost:5001/api/rooms/create', {
+      const response = await fetch(`${API_BASE_URL}/api/rooms/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -933,7 +934,7 @@ const JoinRoomModal = ({ user, onClose, navigate }) => {
         return;
       }
 
-      const response = await fetch('http://localhost:5001/api/rooms/join', {
+      const response = await fetch(`${API_BASE_URL}/api/rooms/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
