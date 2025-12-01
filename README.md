@@ -2,6 +2,7 @@
 
 A complete authentication application with Node.js/Express backend and React frontend.
 
+
 ## Project Structure
 
 ```
