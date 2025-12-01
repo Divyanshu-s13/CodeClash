@@ -131,6 +131,14 @@ router.post('/join', protect, async (req, res) => {
     room.participants.push(req.userId);
     await room.save();
 
+    // Increment battlesFought for the user
+    const user = await User.findById(req.userId);
+    if (user) {
+      user.battlesFought = (user.battlesFought || 0) + 1;
+      await user.save();
+      console.log(`[Join] Updated ${user.username} battlesFought: ${user.battlesFought}`);
+    }
+
     res.status(200).json({
       success: true,
       message: 'Joined room successfully',
@@ -373,15 +381,6 @@ router.post('/start/:code', protect, async (req, res) => {
     const randomIndex = Math.floor(Math.random() * questionBank.questions.length);
     const selectedQuestion = questionBank.questions[randomIndex];
 
-    // Increment battlesFought for all participants
-    const User = require('../models/User');
-    const participantIds = room.participants.map(p => p._id);
-    const updateResult = await User.updateMany(
-      { _id: { $in: participantIds } },
-      { $inc: { battlesFought: 1 } }
-    );
-    console.log(`[Start Battle] Incremented battlesFought for ${room.participants.length} participants. Modified: ${updateResult.modifiedCount}`);
-
     // Update room
     room.battleStarted = true;
     room.questionId = selectedQuestion.id;
@@ -484,6 +483,14 @@ router.post('/submit/:code', protect, async (req, res) => {
       // Increment questions completed
       room.questionsCompleted = (room.questionsCompleted || 0) + 1;
       console.log(`[Submit] Questions completed: ${room.questionsCompleted}/3`);
+
+      // Update user's problem count
+      const submittingUser = await User.findById(req.userId);
+      if (submittingUser) {
+        submittingUser.totalProblems = (submittingUser.totalProblems || 0) + 1;
+        await submittingUser.save();
+        console.log(`[Submit] Updated ${submittingUser.username} problems: Total=${submittingUser.totalProblems}`);
+      }
 
       // Check if session should end (3 questions completed)
       if (room.questionsCompleted >= 3) {

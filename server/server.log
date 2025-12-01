@@ -1,8 +1,182 @@
-
-> auth-server@1.0.0 start
-> node index.js
-
-(node:77609) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:19887) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Server running on port 5001
 MongoDB Connected
+[Signup] Attempting signup: { username: 'rajpal', email: 'rajpal@gmail.com', passwordLength: 6 }
+[Signup] User already exists: rajpal
+[Signup] Attempting signup: {
+  username: 'rajpal',
+  email: 'rajpalakanksha@gmail.com',
+  passwordLength: 6
+}
+[Signup] User already exists: rajpal
+[Signup] Attempting signup: {
+  username: 'rajpal',
+  email: 'rajpalakanksha1@gmail.com',
+  passwordLength: 6
+}
+[Signup] User already exists: rajpal
+[Signup] Attempting signup: {
+  username: 'rajpal',
+  email: 'rajpalakanksha1@gmail.com',
+  passwordLength: 6
+}
+[Signup] User already exists: rajpal
+[Signup] Attempting signup: {
+  username: 'rajpal',
+  email: 'rajpalakanksha1@gmail.com',
+  passwordLength: 6
+}
+[Signup] User already exists: rajpal
+[Signup] Attempting signup: {
+  username: 'rajpal',
+  email: 'rajpalakanksha1@gmail.com',
+  passwordLength: 6
+}
+[Signup] User already exists: rajpal
+[Signup] Attempting signup: {
+  username: 'rajpal1',
+  email: 'rajpalakanksha1@gmail.com',
+  passwordLength: 6
+}
+[Signup] Creating new user...
+[Signup] User created successfully: {
+  id: new ObjectId("692de2f8705da37a22710963"),
+  username: 'rajpal1',
+  email: 'rajpalakanksha1@gmail.com',
+  rating: 800,
+  battlesFought: 0,
+  totalProblems: 0
+}
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 3 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 3 users
+[Search] Request received for username: r
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 3
+[Search] Request received for username: ra
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 2
+[Search] Request received for username: raj
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 2
+[Search] Request received for username: rajp
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 2
+[Search] Request received for username: tes
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 1
+[Search] Request received for username: r
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 3
+[Search] Request received for username: ra
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 2
+[Search] Request received for username: t
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 1
+[Search] Request received for username: t
+[Search] User ID from token: 692de2f8705da37a22710963
+[Search] Found users: 1
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 3 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 3 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 3 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 3 users
+[Signup] Attempting signup: {
+  username: 'divyanshu',
+  email: 'mradushadivyanshu@gmail.com',
+  passwordLength: 6
+}
+[Signup] Creating new user...
+[Signup] User created successfully: {
+  id: new ObjectId("692de3f2705da37a227109e8"),
+  username: 'divyanshu',
+  email: 'mradushadivyanshu@gmail.com',
+  rating: 800,
+  battlesFought: 0,
+  totalProblems: 0
+}
+[Join] Updated divyanshu battlesFought: 1
+[Start Battle] Room 388240 has 2 participants: [ '692de2f8705da37a22710963', '692de3f2705da37a227109e8' ]
+[Leave] Session ended - divyanshu wins by default
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Matchmaking] Join queue request received
+[Matchmaking] User ID: 692de3f2705da37a227109e8
+[Matchmaking] User found: divyanshu
+[Matchmaking] Finding match for divyanshu (Rating: 800)
+[Matchmaking] Current queue size: 0
+[Matchmaking] No match found for divyanshu
+[Matchmaking] User divyanshu added to queue. Position: 1
+[Matchmaking] Finding match for divyanshu (Rating: 800)
+[Matchmaking] Current queue size: 1
+[Matchmaking] Checking candidate: divyanshu (Rating: 800)
+[Matchmaking] Skipping self
+[Matchmaking] No match found for divyanshu
+[Leaderboard] Fetching leaderboard data...
+[Matchmaking] User divyanshu left queue
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Matchmaking] Join queue request received
+[Matchmaking] User ID: 692de3f2705da37a227109e8
+[Matchmaking] User found: divyanshu
+[Matchmaking] Finding match for divyanshu (Rating: 800)
+[Matchmaking] Current queue size: 0
+[Matchmaking] No match found for divyanshu
+[Matchmaking] User divyanshu added to queue. Position: 1
+[Matchmaking] Finding match for divyanshu (Rating: 800)
+[Matchmaking] Current queue size: 1
+[Matchmaking] Checking candidate: divyanshu (Rating: 800)
+[Matchmaking] Skipping self
+[Matchmaking] No match found for divyanshu
+[Matchmaking] Join queue request received
+[Matchmaking] User ID: 692de2f8705da37a22710963
+[Matchmaking] User found: rajpal1
+[Matchmaking] Finding match for rajpal1 (Rating: 800)
+[Matchmaking] Current queue size: 1
+[Matchmaking] Checking candidate: divyanshu (Rating: 800)
+[Matchmaking] Rating difference: 0
+[Matchmaking] Match found! rajpal1 vs divyanshu
+[Matchmaking] Match found! Room 317449 created for rajpal1 vs divyanshu
+[Leave] Ashes ratings updated: divyanshu +25, rajpal1 -25
+[Leave] Session ended - divyanshu wins by default
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users
+[Leaderboard] Fetching leaderboard data...
+[Leaderboard] Found 4 users

@@ -17,23 +17,36 @@ const generateToken = (id) => {
 router.post('/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    console.log('[Signup] Attempting signup:', { username, email, passwordLength: password?.length });
 
     // Validation
     if (!username || !email || !password) {
+      console.log('[Signup] Missing fields');
       return res.status(400).json({ success: false, message: 'Please provide all fields' });
     }
 
     // Check if user already exists
     let user = await User.findOne({ $or: [{ email }, { username }] });
     if (user) {
+      console.log('[Signup] User already exists:', user.username);
       return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
+    console.log('[Signup] Creating new user...');
     // Create user
     user = await User.create({
       username,
       email,
       password
+    });
+
+    console.log('[Signup] User created successfully:', {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      rating: user.rating,
+      battlesFought: user.battlesFought,
+      totalProblems: user.totalProblems
     });
 
     // Generate token
@@ -52,6 +65,7 @@ router.post('/signup', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('[Signup] Error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });

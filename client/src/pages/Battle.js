@@ -19,7 +19,7 @@ const Battle = ({ user, refreshUser }) => {
   const [error, setError] = useState('');
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
-  const [testResult, setTestResult] = useState(null); // 'pass', 'fail', or null
+  const [testResult, setTestResult] = useState(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [submitTestResults, setSubmitTestResults] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);

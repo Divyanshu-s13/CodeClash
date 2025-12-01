@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  totalProblems: {
+    type: Number,
+    default: 0
+  },
   tier: {
     type: String,
     default: 'Beginner'

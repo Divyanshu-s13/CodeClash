@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
 import './Stats.css';
 
 const Stats = ({ user, onLogout }) => {
@@ -20,7 +20,7 @@ const Stats = ({ user, onLogout }) => {
 
   return (
     <div className="stats-page">
-      <Sidebar user={user} onLogout={onLogout} />
+      <Navbar user={user} onLogout={onLogout} />
       
       <div className="stats-container">
         <div className="stats-header">

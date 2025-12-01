@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steel Door Transition Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0D0F12;
+      color: #D6D6D9;
+      overflow-x: hidden;
+    }
+
+    .demo-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .demo-content {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #FF6A2F, #FF8A45);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #B9BDC5;
+      margin-bottom: 2rem;
+    }
+
+    .trigger-btn {
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #FF6A2F, #FF8A45);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 106, 47, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .trigger-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 106, 47, 0.4);
+    }
+
+    .trigger-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Steel Door Styles */
+    .page-transition-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .steel-door {
+      position: absolute;
+      top: 0;
+      width: 50vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #4a5258 0%, #2d3338 50%, #1a1d22 100%);
+      box-shadow: 
+        inset 0 0 120px rgba(0, 0, 0, 0.6),
+        inset 20px 0 80px rgba(255, 255, 255, 0.03),
+        0 0 60px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .left-door {
+      left: 0;
+      border-right: 2px solid #1a1d22;
+    }
+
+    .right-door {
+      right: 0;
+      border-left: 2px solid #1a1d22;
+    }
+
+    .door-texture {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 4px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0px, rgba(0, 0, 0, 0.03) 1px, transparent 2px, transparent 4px);
+      opacity: 0.6;
+    }
+
+    .door-edge-glow {
+      position: absolute;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255, 138, 69, 0.8) 0%, rgba(255, 106, 47, 0.6) 20%, rgba(255, 138, 69, 0.4) 50%, rgba(255, 106, 47, 0.6) 80%, rgba(255, 138, 69, 0.8) 100%);
+      box-shadow: 0 0 20px rgba(255, 106, 47, 0.6);
+      filter: blur(2px);
+    }
+
+    .left-door .door-edge-glow {
+      right: -2px;
+    }
+
+    .right-door .door-edge-glow {
+      left: -2px;
+    }
+
+    .door-highlights {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse 40% 100% at 80% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.3) 100%);
+    }
+
+    .logo-half {
+      position: absolute;
+      top: 50%;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(-50%);
+      font-size: 120px;
+      font-weight: 900;
+      color: rgba(255, 138, 69, 0.3);
+      text-shadow: 0 0 30px rgba(255, 106, 47, 0.5);
+    }
+
+    .left-half {
+      right: 20px;
+      clip-path: inset(0 50% 0 0);
+    }
+
+    .right-half {
+      left: 20px;
+      clip-path: inset(0 0 0 50%);
+    }
+
+    .center-seam-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 100vh;
+      background: radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 138, 69, 0.3) 0%, rgba(255, 106, 47, 0.15) 30%, transparent 70%);
+      filter: blur(20px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Animations */
+    .steel-door.closing {
+      animation: doorSlideIn 0.5s cubic-bezier(0.75, 0, 0.25, 1) forwards;
+    }
+
+    @keyframes doorSlideIn {
+      from { transform: translateX(var(--start-pos)); }
+      to { transform: translateX(0); }
+    }
+
+    .left-door.closing {
+      --start-pos: -100%;
+    }
+
+    .right-door.closing {
+      --start-pos: 100%;
+    }
+
+    .closing .logo-half {
+      animation: logoFadeIn 0.3s ease-out 0.15s forwards;
+    }
+
+    @keyframes logoFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+      }
+    }
+
+    .steel-door.closed {
+      transform: translateX(0);
+    }
+
+    .closed .logo-half {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+
+    .center-seam-glow.closed {
+      animation: seamGlowPulse 0.2s ease-in-out forwards;
+    }
+
+    @keyframes seamGlowPulse {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    .steel-door.opening {
+      animation: doorSlideOut 0.5s cubic-bezier(0.75, 0, 0.25, 1) forwards;
+    }
+
+    @keyframes doorSlideOut {
+      from { transform: translateX(0); }
+      to { transform: translateX(var(--end-pos)); }
+    }
+
+    .left-door.opening {
+      --end-pos: -100%;
+    }
+
+    .right-door.opening {
+      --end-pos: 100%;
+    }
+
+    .opening .logo-half {
+      animation: logoFadeOut 0.25s ease-in forwards;
+    }
+
+    @keyframes logoFadeOut {
+      from {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-50%) scale(1.1);
+      }
+    }
+
+    .center-seam-glow.opening {
+      animation: seamGlowFadeOut 0.4s ease-out forwards;
+    }
+
+    @keyframes seamGlowFadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <div class="demo-content">
+      <h1>Steel Door Transition</h1>
+      <p>Click the button below to preview the cinematic page transition animation with sliding steel doors and split logo effect.</p>
+      <button class="trigger-btn" onclick="triggerTransition()">
+        🚪 Trigger Transition
+      </button>
+    </div>
+  </div>
+
+  <div id="transition" class="page-transition-overlay hidden">
+    <div class="steel-door left-door">
+      <div class="door-texture"></div>
+      <div class="door-edge-glow"></div>
+      <div class="door-highlights"></div>
+      <div class="logo-half left-half">A</div>
+    </div>
+
+    <div class="steel-door right-door">
+      <div class="door-texture"></div>
+      <div class="door-edge-glow"></div>
+      <div class="door-highlights"></div>
+      <div class="logo-half right-half">A</div>
+    </div>
+
+    <div class="center-seam-glow"></div>
+  </div>
+
+  <script>
+    function triggerTransition() {
+      const overlay = document.getElementById('transition');
+      const leftDoor = overlay.querySelector('.left-door');
+      const rightDoor = overlay.querySelector('.right-door');
+      const seamGlow = overlay.querySelector('.center-seam-glow');
+      
+      // Show overlay
+      overlay.classList.remove('hidden');
+      
+      // Phase 1: Closing (0-600ms)
+      leftDoor.classList.add('closing');
+      rightDoor.classList.add('closing');
+      
+      // Phase 2: Closed pause (500-700ms)
+      setTimeout(() => {
+        leftDoor.classList.remove('closing');
+        rightDoor.classList.remove('closing');
+        leftDoor.classList.add('closed');
+        rightDoor.classList.add('closed');
+        seamGlow.classList.add('closed');
+      }, 500);
+      
+      // Phase 3: Opening (700-1200ms)
+      setTimeout(() => {
+        leftDoor.classList.remove('closed');
+        rightDoor.classList.remove('closed');
+        seamGlow.classList.remove('closed');
+        leftDoor.classList.add('opening');
+        rightDoor.classList.add('opening');
+        seamGlow.classList.add('opening');
+      }, 700);
+      
+      // Phase 4: Complete (1200ms)
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        leftDoor.className = 'steel-door left-door';
+        rightDoor.className = 'steel-door right-door';
+        seamGlow.className = 'center-seam-glow';
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

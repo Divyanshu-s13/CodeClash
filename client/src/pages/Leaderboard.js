@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
 import './Leaderboard.css';
 
 const Leaderboard = ({ user, onLogout }) => {
@@ -76,11 +76,11 @@ const Leaderboard = ({ user, onLogout }) => {
 
   return (
     <div className="leaderboard-page">
-      <Sidebar user={user} onLogout={onLogout} />
+      <Navbar user={user} onLogout={onLogout} />
       
       <div className="leaderboard-content">
         <div className="leaderboard-header">
-          <h1>🏆 Global Leaderboard</h1>
+          <h1>Global Leaderboard</h1>
           <p>Top players ranked by battle rating</p>
         </div>
 
@@ -95,69 +95,125 @@ const Leaderboard = ({ user, onLogout }) => {
             <button onClick={fetchLeaderboard}>Retry</button>
           </div>
         ) : (
-          <div className="leaderboard-table-container">
-            <table className="leaderboard-table">
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Player</th>
-                  <th>Rating</th>
-                  <th>Battles</th>
-                  <th>Tier</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((userItem) => (
-                  <tr 
-                    key={userItem.id} 
-                    className={user && userItem.id === user.id ? 'current-user' : ''}
-                  >
-                    <td className="rank-cell">
-                      <span className="rank-badge">
-                        {getRankMedal(userItem.rank)}
-                      </span>
-                    </td>
-                    <td className="player-cell">
-                      <div className="player-avatar">
-                        {userItem.username ? userItem.username.charAt(0).toUpperCase() : '?'}
-                      </div>
-                      <div className="player-info">
-                        <span className="player-name">
-                          {userItem.username || 'Unknown'}
-                          {user && userItem.id === user.id && (
-                            <span className="you-badge">You</span>
-                          )}
-                        </span>
-                        <span className="player-email">{userItem.email || ''}</span>
-                      </div>
-                    </td>
-                    <td className="rating-cell">
-                      <span className="rating-value">{userItem.rating || 0}</span>
-                    </td>
-                    <td className="battles-cell">{userItem.battlesFought || 0}</td>
-                    <td className="tier-cell">
-                      <span 
-                        className="tier-badge" 
-                        style={{ backgroundColor: getTierColor(userItem.tier || 'Beginner') }}
-                      >
-                        {userItem.tier || 'Beginner'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <>
+            {/* Top 3 Podium Section */}
+            <div className="podium-section">
+              <div className="podium-container">
+                {/* 2nd Place */}
+                {users[1] && (
+                  <div className="podium-card second-place">
+                    <div className="podium-rank">2</div>
+                    <div className="podium-avatar">
+                      {users[1].username?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                    <div className="podium-name">{users[1].username}</div>
+                    <div className="podium-rating">
+                      <span className="rating-badge">AP {users[1].rating || 500} points</span>
+                    </div>
+                    <div className="podium-prize">
+                      ⚔️ {users[1].rating * 10} <br/> Prize
+                    </div>
+                  </div>
+                )}
 
-            {users.length === 0 && (
-              <div className="no-data">
-                <p>No users found on the leaderboard yet.</p>
+                {/* 1st Place */}
+                {users[0] && (
+                  <div className="podium-card first-place">
+                    <div className="podium-rank">1</div>
+                    <div className="podium-avatar">
+                      {users[0].username?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                    <div className="podium-name">{users[0].username}</div>
+                    <div className="podium-rating">
+                      <span className="rating-badge">AP {users[0].rating || 500} points</span>
+                    </div>
+                    <div className="podium-prize">
+                      ⚔️ {users[0].rating * 10} <br/> Prize
+                    </div>
+                  </div>
+                )}
+
+                {/* 3rd Place */}
+                {users[2] && (
+                  <div className="podium-card third-place">
+                    <div className="podium-rank">3</div>
+                    <div className="podium-avatar">
+                      {users[2].username?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                    <div className="podium-name">{users[2].username}</div>
+                    <div className="podium-rating">
+                      <span className="rating-badge">AP {users[2].rating || 500} points</span>
+                    </div>
+                    <div className="podium-prize">
+                      ⚔️ {users[2].rating * 10} <br/> Prize
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+
+              {/* Stat Message */}
+              <div className="stat-message">
+                You earned ⚔️ {user?.totalPointsToday || 50} today and are ranked — out of {users.length} users
+              </div>
+            </div>
+
+            {/* Table Section */}
+            <div className="leaderboard-table-section">
+              <div className="table-header">
+                <h2>Top Users</h2>
+                <button className="show-all-btn">Show all</button>
+              </div>
+
+              <div className="leaderboard-table-container">
+                <table className="leaderboard-table">
+                  <thead>
+                    <tr>
+                      <th>Serial Number</th>
+                      <th>User Address</th>
+                      <th>24h Volume</th>
+                      <th>User Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((u, idx) => (
+                      <tr key={u.id || idx}>
+                        <td>#{String(idx + 1).padStart(3, '0')}</td>
+                        <td className="user-cell">
+                          <span className="flag">{getCountryFlag(u.country)}</span>
+                          <span className="username">{u.username}</span>
+                        </td>
+                        <td>${(u.rating * Math.random()).toFixed(2)} B</td>
+                        <td className="address-cell">{formatAddress(u.email)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>
   );
+};
+
+const getCountryFlag = (country) => {
+  const flags = {
+    'US': '🇺🇸',
+    'IN': '🇮🇳',
+    'CA': '🇨🇦',
+    'UK': '🇬🇧',
+    'DE': '🇩🇪',
+    'FR': '🇫🇷',
+    'JP': '🇯🇵',
+    'AU': '🇦🇺'
+  };
+  return flags[country] || '🌍';
+};
+
+const formatAddress = (email) => {
+  if (!email) return '0x...';
+  return email.substring(0, 8) + '...' + email.substring(email.length - 4);
 };
 
 export default Leaderboard;

@@ -1,0 +1,315 @@
+/* Page Transition Overlay */
+.page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  pointer-events: none;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Steel Door Base */
+.steel-door {
+  position: absolute;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #4a5258 0%, #2d3338 50%, #1a1d22 100%);
+  box-shadow: 
+    inset 0 0 120px rgba(0, 0, 0, 0.6),
+    inset 20px 0 80px rgba(255, 255, 255, 0.03),
+    0 0 60px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.left-door {
+  left: 0;
+  border-right: 2px solid #1a1d22;
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.right-door {
+  right: 0;
+  border-left: 2px solid #1a1d22;
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Door Texture - Brushed Metal */
+.door-texture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.01) 0px,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  opacity: 0.6;
+}
+
+/* Edge Glow */
+.door-edge-glow {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 138, 69, 0.8) 0%,
+    rgba(255, 106, 47, 0.6) 20%,
+    rgba(255, 138, 69, 0.4) 50%,
+    rgba(255, 106, 47, 0.6) 80%,
+    rgba(255, 138, 69, 0.8) 100%
+  );
+  box-shadow: 0 0 20px rgba(255, 106, 47, 0.6);
+  filter: blur(2px);
+}
+
+.left-door .door-edge-glow {
+  right: -2px;
+}
+
+.right-door .door-edge-glow {
+  left: -2px;
+}
+
+/* Highlights - Cinematic Lighting */
+.door-highlights {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(
+      ellipse 40% 100% at 80% 50%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+}
+
+/* Logo Split Animation */
+.logo-half {
+  position: absolute;
+  top: 50%;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(-50%);
+}
+
+.logo-half img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: 
+    drop-shadow(0 0 20px rgba(255, 138, 69, 0.4))
+    drop-shadow(0 0 40px rgba(255, 106, 47, 0.2))
+    brightness(1.1);
+}
+
+.left-half {
+  right: 20px;
+  clip-path: inset(0 50% 0 0);
+}
+
+.right-half {
+  left: 20px;
+  clip-path: inset(0 0 0 50%);
+}
+
+/* Center Seam Fog Glow */
+.center-seam-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 100vh;
+  background: radial-gradient(
+    ellipse 100% 100% at 50% 50%,
+    rgba(255, 138, 69, 0.3) 0%,
+    rgba(255, 106, 47, 0.15) 30%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ====== ANIMATION PHASES ====== */
+
+/* CLOSING PHASE (0-2000ms) - Much slower close to show current page */
+.steel-door.closing {
+  animation: doorSlideIn 2s cubic-bezier(0.75, 0, 0.25, 1) forwards;
+  opacity: 1;
+}
+
+.left-door.closing {
+  transform: translateX(-100%);
+}
+
+.right-door.closing {
+  transform: translateX(100%);
+}
+
+@keyframes doorSlideIn {
+  0% {
+    transform: translateX(var(--start-pos));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.left-door.closing {
+  --start-pos: -100%;
+}
+
+.right-door.closing {
+  --start-pos: 100%;
+}
+
+/* Logo appears as doors close */
+.closing .logo-half {
+  animation: logoFadeIn 0.8s ease-out 0.8s forwards;
+}
+
+@keyframes logoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+/* CLOSED PHASE (2000-4500ms) - 2.5 seconds dramatic pause for navigation */
+.steel-door.closed {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.closed .logo-half {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.center-seam-glow.closed {
+  animation: seamGlowPulse 2.5s ease-in-out forwards;
+}
+
+@keyframes seamGlowPulse {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* OPENING PHASE (4500-6000ms) - Much slower open to reveal new page */
+.steel-door.opening {
+  animation: doorSlideOut 1.5s cubic-bezier(0.75, 0, 0.25, 1) forwards;
+  opacity: 1;
+}
+
+@keyframes doorSlideOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--end-pos));
+  }
+}
+
+.left-door.opening {
+  --end-pos: -100%;
+}
+
+.right-door.opening {
+  --end-pos: 100%;
+}
+
+/* Logo fades as doors open */
+.opening .logo-half {
+  animation: logoFadeOut 0.25s ease-in forwards;
+}
+
+@keyframes logoFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+.center-seam-glow.opening {
+  animation: seamGlowFadeOut 0.4s ease-out forwards;
+}
+
+@keyframes seamGlowFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Performance Optimizations */
+.steel-door,
+.logo-half,
+.center-seam-glow {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .logo-half {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .left-half {
+    right: 10px;
+  }
+  
+  .right-half {
+    left: 10px;
+  }
+}

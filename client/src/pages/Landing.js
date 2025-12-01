@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import authService from '../services/authService';
+import PageTransition from '../components/PageTransition';
 import './Landing.css';
 import codeClashLogo from '../assets/codeClashLogo.png';
 import codeClashTitle from '../assets/codeClashTitle.png';
@@ -15,6 +16,7 @@ const Landing = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleEnterArena = () => {
     setAuthMode('signup');
@@ -50,13 +52,15 @@ const Landing = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
     try {
+      // Trigger transition immediately without changing loading state
+      setIsTransitioning(true);
+      
       if (authMode === 'signup') {
         if (formData.password !== formData.confirmPassword) {
           setError('Passwords do not match');
-          setLoading(false);
+          setIsTransitioning(false);
           return;
         }
         console.log('Attempting signup with:', { username: formData.username, email: formData.email });
@@ -69,8 +73,10 @@ const Landing = () => {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         console.log('Navigating to dashboard...');
-        // Force a page reload to update App.js state
-        window.location.href = '/dashboard';
+        // Navigate after door closes
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 2000);
       } else {
         console.log('Attempting login with:', { email: formData.email });
         const response = await authService.login(formData.email, formData.password);
@@ -78,24 +84,26 @@ const Landing = () => {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         console.log('Navigating to dashboard...');
-        // Force a page reload to update App.js state
-        window.location.href = '/dashboard';
+        // Navigate after door closes
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 2000);
       }
     } catch (err) {
       console.error('Auth error:', err);
       setError(err.response?.data?.message || `Error ${authMode === 'login' ? 'logging in' : 'signing up'}`);
-    } finally {
-      setLoading(false);
+      setIsTransitioning(false);
     }
   };
 
   return (
-    <div className="landing-page">
-      {/* Auth Modal */}
-      {showAuthModal && (
-        <div className="auth-modal-overlay" onClick={closeModal}>
+    <PageTransition isTransitioning={isTransitioning}>
+      <div className="landing-page">
+        {/* Auth Modal */}
+        {showAuthModal && (
+        <div className="auth-modal-overlay" onClick={closeModal} style={{ pointerEvents: isTransitioning ? 'none' : 'auto' }}>
           <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>×</button>
+            <button className="modal-close" onClick={closeModal} disabled={isTransitioning}>×</button>
             
             <div className="modal-header">
               <img src={codeClashLogo} alt="CodeClash" className="modal-logo-image" />
@@ -176,16 +184,16 @@ const Landing = () => {
                 </div>
               )}
 
-              <button type="submit" className="auth-submit-btn" disabled={loading}>
-                {loading ? (authMode === 'login' ? 'Signing In...' : 'Creating Account...') : (authMode === 'login' ? 'Sign In' : 'Create Account')}
+              <button type="submit" className="auth-submit-btn" disabled={isTransitioning}>
+                {authMode === 'login' ? 'Sign In' : 'Create Account'}
               </button>
             </form>
 
             <div className="auth-footer-modal">
               {authMode === 'login' ? (
-                <p>Don't have an account? <button onClick={() => setAuthMode('signup')}>Sign up</button></p>
+                <p>Don't have an account? <button onClick={() => setAuthMode('signup')} disabled={isTransitioning}>Sign up</button></p>
               ) : (
-                <p>Already have an account? <button onClick={() => setAuthMode('login')}>Sign in</button></p>
+                <p>Already have an account? <button onClick={() => setAuthMode('login')} disabled={isTransitioning}>Sign in</button></p>
               )}
             </div>
           </div>
@@ -425,6 +433,7 @@ const Landing = () => {
         </div>
       </section>
     </div>
+    </PageTransition>
   );
 };
 
